@@ -26,17 +26,19 @@ namespace WPFConverter
     {
         public string[] PathFiles { get; set; }
         public string PathImage { get; set; }
-        public byte flag { get; set; } // 0 - path ||| 1 - file
+        public byte? flag { get; set; } = null ; // 0 - path ||| 1 - file
         public int[] Size { get; set; }
-        PictureConverter picConverter = new PictureConverter();
+        PictureConverter pictureConverter = new PictureConverter();
         DelBlack delBlack = new DelBlack();
+        ColorChanged colorChanged = new ColorChanged();
+
+
         public MainWindow()
         {
             InitializeComponent();
-
-
         }
 
+        #region Menu-->General buttons
         private void MenuItem_Click_EnterPath(object sender, RoutedEventArgs e)
         {
             using (var fbd = new FolderBrowserDialog())
@@ -56,8 +58,6 @@ namespace WPFConverter
 
         private void MenuItem_Click_EnterFile(object sender, RoutedEventArgs e)
         {
-
-
             OpenFileDialog ofd = new OpenFileDialog();
 
             if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
@@ -68,7 +68,10 @@ namespace WPFConverter
                 flag = 1;
             }
         }
+        #endregion
 
+
+        #region Button event
         private void btnGoGray_Click(object sender, RoutedEventArgs e)
         {
             if (flag == 0)
@@ -84,11 +87,11 @@ namespace WPFConverter
                 }
 
                 MessageBox.Show("Wait...");
-                delBlack.Grayer(inputFile, outPath);
+                pictureConverter.Grayer(inputFile, outPath);
                 MessageBox.Show("Finish!");
 
             }
-            else
+            else if(flag == 1)
             {
                 var inputFile = PathImage;
                 string outPath = "";
@@ -101,21 +104,12 @@ namespace WPFConverter
                 if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                     outPath = sfd.FileName;
 
-                /*ReSizeReturn wndSize = new ReSizeReturn();
-                wndSize.ShowDialog();
-                if (!wndSize.Activate())
-                    Size = wndSize.Size;*/
-
                 MessageBox.Show("Wait...");
-
-                delBlack.Grayer(inputFile, outPath);
-
+                pictureConverter.Grayer(inputFile, outPath);
                 MessageBox.Show("Finish!");
-
-
-
-
             }
+            else
+                MessageBox.Show("Выберите файл или папку");
         }
 
         private void btnGoGrayWithResize_Click(object sender, RoutedEventArgs e)
@@ -138,11 +132,11 @@ namespace WPFConverter
                     Size = wndSize.Size;
 
                 MessageBox.Show("Wait...");
-                delBlack.Grayer(inputFile, outPath, Size);
+                pictureConverter.Grayer(inputFile, outPath, Size);
                 MessageBox.Show("Finish!");
 
             }
-            else
+            else if (flag == 1)
             {
                 var inputFile = PathImage;
                 string outPath = "";
@@ -162,11 +156,197 @@ namespace WPFConverter
 
                 MessageBox.Show("Wait...");
 
-                delBlack.Grayer(inputFile, outPath, Size);
+                pictureConverter.Grayer(inputFile, outPath, Size);
 
                 MessageBox.Show("Finish!");
             }
+            else
+                MessageBox.Show("Выберите файл или папку");
         }
+
+        private void btnGoResize_Click(object sender, RoutedEventArgs e)
+        {
+            if (flag == 0)
+            {
+                var inputFile = PathFiles;
+                string outPath = "";
+
+                var fbd = new FolderBrowserDialog();
+                DialogResult result = fbd.ShowDialog();
+                if (result == System.Windows.Forms.DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
+                {
+                    outPath = fbd.SelectedPath;
+                }
+
+                ReSizeReturn wndSize = new ReSizeReturn();
+                wndSize.ShowDialog();
+                if (!wndSize.Activate())
+                    Size = wndSize.Size;
+
+                MessageBox.Show("Wait...");
+                pictureConverter.Resize(inputFile, outPath, Size);
+                MessageBox.Show("Finish!");
+
+            }
+            else if (flag == 1)
+            {
+                var inputFile = PathImage;
+                string outPath = "";
+
+                SaveFileDialog sfd = new SaveFileDialog();
+                sfd.Filter = "PNG|*.png|JPG|*.jpg|BMP|*.BMP";
+                sfd.AddExtension = true;
+                sfd.DefaultExt = "png";
+
+                if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                    outPath = sfd.FileName;
+
+                ReSizeReturn wndSize = new ReSizeReturn();
+                wndSize.ShowDialog();
+                if (!wndSize.Activate())
+                    Size = wndSize.Size;
+
+                MessageBox.Show("Wait...");
+
+                pictureConverter.Resize(inputFile, outPath, Size);
+
+                MessageBox.Show("Finish!");
+            }
+            else
+                MessageBox.Show("Выберите файл или папку");
+        }
+
+        private void btnGoBlackWhite_Click(object sender, RoutedEventArgs e)
+        {
+            if (flag == 0)
+            {
+                var inputFile = PathFiles;
+                string outPath = "";
+
+                var fbd = new FolderBrowserDialog();
+                DialogResult result = fbd.ShowDialog();
+                if (result == System.Windows.Forms.DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
+                {
+                    outPath = fbd.SelectedPath;
+                }
+
+                MessageBox.Show("Wait...");
+                pictureConverter.BW(inputFile, outPath);
+                MessageBox.Show("Finish!");
+
+            }
+            else if (flag == 1)
+            {
+                var inputFile = PathImage;
+                string outPath = "";
+
+                SaveFileDialog sfd = new SaveFileDialog();
+                sfd.Filter = "PNG|*.png|JPG|*.jpg|BMP|*.BMP";
+                sfd.AddExtension = true;
+                sfd.DefaultExt = "png";
+
+                if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                    outPath = sfd.FileName;
+
+                MessageBox.Show("Wait...");
+                pictureConverter.BW(inputFile, outPath);
+                MessageBox.Show("Finish!");
+            }
+            else
+                MessageBox.Show("Выберите файл или папку");
+        }
+
+        private void btnGoBlackWhiteWithResize_Click(object sender, RoutedEventArgs e)
+        {
+            if (flag == 0)
+            {
+                var inputFile = PathFiles;
+                string outPath = "";
+
+                var fbd = new FolderBrowserDialog();
+                DialogResult result = fbd.ShowDialog();
+                if (result == System.Windows.Forms.DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
+                {
+                    outPath = fbd.SelectedPath;
+                }
+
+                ReSizeReturn wndSize = new ReSizeReturn();
+                wndSize.ShowDialog();
+                if (!wndSize.Activate())
+                    Size = wndSize.Size;
+
+                MessageBox.Show("Wait...");
+                pictureConverter.BW(inputFile, outPath, Size);
+                MessageBox.Show("Finish!");
+
+            }
+            else if (flag == 1)
+            {
+                var inputFile = PathImage;
+                string outPath = "";
+
+                SaveFileDialog sfd = new SaveFileDialog();
+                sfd.Filter = "PNG|*.png|JPG|*.jpg|BMP|*.BMP";
+                sfd.AddExtension = true;
+                sfd.DefaultExt = "png";
+
+                if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                    outPath = sfd.FileName;
+
+                ReSizeReturn wndSize = new ReSizeReturn();
+                wndSize.ShowDialog();
+                if (!wndSize.Activate())
+                    Size = wndSize.Size;
+
+                MessageBox.Show("Wait...");
+                pictureConverter.BW(inputFile, outPath, Size);
+                MessageBox.Show("Finish!");
+            }
+            else
+                MessageBox.Show("Выберите файл или папку");
+        }
+
+        private void btnGoChange_Click(object sender, RoutedEventArgs e)
+        {
+            if (flag == 0)
+            {
+                var inputFile = PathFiles;
+                string outPath = "";
+
+                var fbd = new FolderBrowserDialog();
+                DialogResult result = fbd.ShowDialog();
+                if (result == System.Windows.Forms.DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
+                {
+                    outPath = fbd.SelectedPath;
+                }
+
+                MessageBox.Show("Wait...");
+                pictureConverter.Change(inputFile, outPath);
+                MessageBox.Show("Finish!");
+
+            }
+            else if (flag == 1)
+            {
+                var inputFile = PathImage;
+                string outPath = "";
+
+                SaveFileDialog sfd = new SaveFileDialog();
+                sfd.Filter = "PNG|*.png|JPG|*.jpg|BMP|*.BMP";
+                sfd.AddExtension = true;
+                sfd.DefaultExt = "png";
+
+                if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                    outPath = sfd.FileName;
+
+                MessageBox.Show("Wait...");
+                pictureConverter.Change(inputFile, outPath);
+                MessageBox.Show("Finish!");
+            }
+            else
+                MessageBox.Show("Выберите файл или папку");
+        }
+
+        #endregion
 
 
     }
