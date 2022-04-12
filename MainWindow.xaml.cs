@@ -29,8 +29,7 @@ namespace WPFConverter
         public byte? flag { get; set; } = null ; // 0 - path ||| 1 - file
         public int[] Size { get; set; }
         PictureConverter pictureConverter = new PictureConverter();
-        DelBlack delBlack = new DelBlack();
-        ColorChanged colorChanged = new ColorChanged();
+        
 
 
         public MainWindow()
@@ -107,6 +106,7 @@ namespace WPFConverter
                 MessageBox.Show("Wait...");
                 pictureConverter.Grayer(inputFile, outPath);
                 MessageBox.Show("Finish!");
+                
             }
             else
                 MessageBox.Show("Выберите файл или папку");
@@ -211,6 +211,10 @@ namespace WPFConverter
                 pictureConverter.Resize(inputFile, outPath, Size);
 
                 MessageBox.Show("Finish!");
+
+                PreviewResult pv = new PreviewResult(outPath);
+                pv.ShowDialog();
+
             }
             else
                 MessageBox.Show("Выберите файл или папку");
@@ -350,4 +354,6 @@ namespace WPFConverter
 
 
     }
+
+    
 }
