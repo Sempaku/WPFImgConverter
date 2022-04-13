@@ -85,10 +85,7 @@ namespace WPFConverter
                     outPath = fbd.SelectedPath;
                 }
 
-                MessageBox.Show("Wait...");
                 pictureConverter.Grayer(inputFile, outPath);
-                MessageBox.Show("Finish!");
-
             }
             else if(flag == 1)
             {
@@ -103,10 +100,9 @@ namespace WPFConverter
                 if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                     outPath = sfd.FileName;
 
-                MessageBox.Show("Wait...");
                 pictureConverter.Grayer(inputFile, outPath);
-                MessageBox.Show("Finish!");
-                
+                Preview(outPath);
+
             }
             else
                 MessageBox.Show("Выберите файл или папку");
@@ -131,9 +127,7 @@ namespace WPFConverter
                 if (!wndSize.Activate())
                     Size = wndSize.Size;
 
-                MessageBox.Show("Wait...");
                 pictureConverter.Grayer(inputFile, outPath, Size);
-                MessageBox.Show("Finish!");
 
             }
             else if (flag == 1)
@@ -154,11 +148,9 @@ namespace WPFConverter
                 if (!wndSize.Activate())
                     Size = wndSize.Size;
 
-                MessageBox.Show("Wait...");
-
                 pictureConverter.Grayer(inputFile, outPath, Size);
 
-                MessageBox.Show("Finish!");
+                Preview(outPath);
             }
             else
                 MessageBox.Show("Выберите файл или папку");
@@ -183,9 +175,7 @@ namespace WPFConverter
                 if (!wndSize.Activate())
                     Size = wndSize.Size;
 
-                MessageBox.Show("Wait...");
                 pictureConverter.Resize(inputFile, outPath, Size);
-                MessageBox.Show("Finish!");
 
             }
             else if (flag == 1)
@@ -206,14 +196,9 @@ namespace WPFConverter
                 if (!wndSize.Activate())
                     Size = wndSize.Size;
 
-                MessageBox.Show("Wait...");
-
                 pictureConverter.Resize(inputFile, outPath, Size);
 
-                MessageBox.Show("Finish!");
-
-                PreviewResult pv = new PreviewResult(outPath);
-                pv.ShowDialog();
+                Preview(outPath);
 
             }
             else
@@ -234,9 +219,7 @@ namespace WPFConverter
                     outPath = fbd.SelectedPath;
                 }
 
-                MessageBox.Show("Wait...");
                 pictureConverter.BW(inputFile, outPath);
-                MessageBox.Show("Finish!");
 
             }
             else if (flag == 1)
@@ -252,9 +235,8 @@ namespace WPFConverter
                 if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                     outPath = sfd.FileName;
 
-                MessageBox.Show("Wait...");
                 pictureConverter.BW(inputFile, outPath);
-                MessageBox.Show("Finish!");
+                Preview(outPath);
             }
             else
                 MessageBox.Show("Выберите файл или папку");
@@ -279,9 +261,7 @@ namespace WPFConverter
                 if (!wndSize.Activate())
                     Size = wndSize.Size;
 
-                MessageBox.Show("Wait...");
                 pictureConverter.BW(inputFile, outPath, Size);
-                MessageBox.Show("Finish!");
 
             }
             else if (flag == 1)
@@ -302,9 +282,8 @@ namespace WPFConverter
                 if (!wndSize.Activate())
                     Size = wndSize.Size;
 
-                MessageBox.Show("Wait...");
                 pictureConverter.BW(inputFile, outPath, Size);
-                MessageBox.Show("Finish!");
+                Preview(outPath);
             }
             else
                 MessageBox.Show("Выберите файл или папку");
@@ -324,9 +303,7 @@ namespace WPFConverter
                     outPath = fbd.SelectedPath;
                 }
 
-                MessageBox.Show("Wait...");
                 pictureConverter.Change(inputFile, outPath);
-                MessageBox.Show("Finish!");
 
             }
             else if (flag == 1)
@@ -342,9 +319,8 @@ namespace WPFConverter
                 if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                     outPath = sfd.FileName;
 
-                MessageBox.Show("Wait...");
                 pictureConverter.Change(inputFile, outPath);
-                MessageBox.Show("Finish!");
+                Preview(outPath);
             }
             else
                 MessageBox.Show("Выберите файл или папку");
@@ -352,7 +328,11 @@ namespace WPFConverter
 
         #endregion
 
-
+        private static void Preview(string outPath) // Preview logic
+        {
+            PreviewResult pv = new PreviewResult(outPath);
+            pv.ShowDialog();
+        }
     }
 
     

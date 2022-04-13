@@ -6,10 +6,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFConverter"
         mc:Ignorable="d"
-        Title="Image" Height="Auto" Width="Auto" WindowState="Normal">
-    
-   <Canvas Name="prvCanvas">
-        <Image x:Name="cnvsImg" />
-    </Canvas>
-    
+        Title="Image" Height="Auto" Width="Auto" >
+
+
+    <ScrollViewer Visibility="Visible" HorizontalScrollBarVisibility="Visible" >
+        <Canvas Name="prvCanvas" Width="Auto" Height="Auto" ScrollViewer.HorizontalScrollBarVisibility="Visible" HorizontalAlignment="Center" VerticalAlignment="Center" >
+            
+            <Image x:Name="cnvsImg" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            
+        </Canvas>
+    </ScrollViewer>
 </Window>
