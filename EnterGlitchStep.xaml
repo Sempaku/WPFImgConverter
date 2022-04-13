@@ -1,0 +1,14 @@
+﻿<Window x:Class="WPFConverter.EnterGlitchStep"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPFConverter"
+        mc:Ignorable="d"
+        Title="Glitch Level" Height="150" Width="200">
+    <Grid>
+        <TextBlock Text="Введите силу от 0 до 255" Margin="31,26,31,84" />
+        <TextBox Name="txtboxStep" Width="50" Height="25" Margin="75,55,75,54"/>
+        <Button Name="btnOK" Content="OK" Width="25" Height="25" Click="btnOK_Click" Margin="88,99,88,10"/>
+    </Grid>
+</Window>

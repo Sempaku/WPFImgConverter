@@ -13,6 +13,7 @@ namespace ColorLib
         public int Height { get; set; }
         public int Width { get; set; }
 
+        #region Resize
         public void Resize(string imgPath, string pathOutputs, int[] size) //Resize all files in path
         {
             Bitmap img = new Bitmap(imgPath);            
@@ -30,7 +31,7 @@ namespace ColorLib
                 resizeimg.Save($"{pathOutputs}\\img{i}.png");
             }
         }
-
+        #endregion
 
 
         public double[] ConvertInDouble(Bitmap img)
@@ -247,7 +248,6 @@ namespace ColorLib
 
 
         }
-
         public Bitmap Convertt(Bitmap img)
         {
             var result = new List<double>();
@@ -400,6 +400,7 @@ namespace ColorLib
             image.Save(path);
         }
 
+        #region Change
         public void Change(string inPath, string OutPath)
         {
             
@@ -483,13 +484,14 @@ namespace ColorLib
             }
             
         }
+        #endregion
 
+        #region WhiteBorder
         /// <summary>
         /// Делает рамки изображения белыми
         /// </summary>
         /// <param name="image">Изображение Bitmap</param>
         /// <returns></returns>
-
         private Bitmap WhiteBorder(Bitmap image)
         {
             
@@ -511,6 +513,79 @@ namespace ColorLib
 
             return whiteImage;
         }
+        #endregion
 
+
+
+        public void Glitch(string pathIn, string pathOut, int glitchstep) // glitchstep 0..255
+        {
+            Bitmap img = new Bitmap(pathIn);
+            Width = img.Width;
+            Height = img.Height;
+
+            Random rnd = new Random();
+            for(int h = 0; h < Height; h++)
+                for(int w = 0; w < Width; w++)
+                {
+                    
+                    var pixel = img.GetPixel(w,h);
+                    var step = rnd.Next(glitchstep);
+                    if ((0 <= pixel.R - step & pixel.R - step <= 255) & 
+                        (0 <= pixel.G - step & pixel.G - step <= 255) &
+                        (0 <= pixel.B - step & pixel.B - step <= 255) )
+                    {
+                        img.SetPixel(w,h, Color.FromArgb(pixel.R - step, pixel.G - step, pixel.B - step));
+                    }
+                    else if ((0 <= pixel.R + step & pixel.R + step <= 255) &
+                             (0 <= pixel.G + step & pixel.G + step <= 255) &
+                             (0 <= pixel.B + step & pixel.B + step <= 255) )
+                    {
+                        img.SetPixel(w,h, Color.FromArgb(pixel.R + step, pixel.G + step, pixel.B + step));
+                    }
+                    else if ((0 <= pixel.R + step & pixel.R + step <= 255) &
+                             (0 <= pixel.G - step & pixel.G - step <= 255) &
+                             (0 <= pixel.B - step & pixel.B - step <= 255))
+                    {
+                        img.SetPixel(w, h, Color.FromArgb(pixel.R + step, pixel.G - step, pixel.B - step));
+                    }
+                    else if ((0 <= pixel.R - step & pixel.R - step <= 255) &
+                             (0 <= pixel.G + step & pixel.G + step <= 255) &
+                             (0 <= pixel.B - step & pixel.B - step <= 255))
+                    {
+                        img.SetPixel(w, h, Color.FromArgb(pixel.R - step, pixel.G + step, pixel.B - step));
+                    }
+                    else if ((0 <= pixel.R - step & pixel.R - step <= 255) &
+                             (0 <= pixel.G - step & pixel.G - step <= 255) &
+                             (0 <= pixel.B + step & pixel.B + step <= 255))
+                    {
+                        img.SetPixel(w, h, Color.FromArgb(pixel.R - step, pixel.G -  step, pixel.B + step));
+                    }
+                    //
+                    else if ((0 <= pixel.R + step & pixel.R + step <= 255) &
+                             (0 <= pixel.G + step & pixel.G + step <= 255) &
+                             (0 <= pixel.B - step & pixel.B - step <= 255))
+                    {
+                        img.SetPixel(w, h, Color.FromArgb(pixel.R + step, pixel.G + step, pixel.B - step));
+                    }
+                    else if ((0 <= pixel.R + step & pixel.R + step <= 255) &
+                             (0 <= pixel.G - step & pixel.G - step <= 255) &
+                             (0 <= pixel.B + step & pixel.B + step <= 255))
+                    {
+                        img.SetPixel(w, h, Color.FromArgb(pixel.R + step, pixel.G - step, pixel.B + step));
+                    }
+                    else if ((0 <= pixel.R + step & pixel.R + step <= 255) &
+                             (0 <= pixel.G + step & pixel.G + step <= 255) &
+                             (0 <= pixel.B - step & pixel.B - step <= 255))
+                    {
+                        img.SetPixel(w, h, Color.FromArgb(pixel.R + step, pixel.G + step, pixel.B - step));
+                    }
+                    else
+                    {
+                        img.SetPixel(w, h, Color.FromArgb(rnd.Next(255), rnd.Next(255), rnd.Next(255)));
+                    }
+                    
+                }
+            img.Save(pathOut);
+        }
     }
 }

@@ -326,6 +326,49 @@ namespace WPFConverter
                 MessageBox.Show("Выберите файл или папку");
         }
 
+        private void btnGoGlitch_Click(object sender, RoutedEventArgs e)
+        {
+            if (flag == 0)
+            {
+                var inputFile = PathFiles;
+                string outPath = "";
+
+                var fbd = new FolderBrowserDialog();
+                DialogResult result = fbd.ShowDialog();
+                if (result == System.Windows.Forms.DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
+                {
+                    outPath = fbd.SelectedPath;
+                }
+
+                //pictureConverter.Glitch(inputFile, outPath);
+            }
+            else if (flag == 1)
+            {
+                var inputFile = PathImage;
+                string outPath = "";
+
+                SaveFileDialog sfd = new SaveFileDialog();
+                sfd.Filter = "PNG|*.png|JPG|*.jpg|BMP|*.BMP";
+                sfd.AddExtension = true;
+                sfd.DefaultExt = "png";
+
+                if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                    outPath = sfd.FileName;
+                int gstep = 0;
+
+                EnterGlitchStep gs = new EnterGlitchStep();
+                gs.ShowDialog();
+                if(!gs.Activate())
+                    gstep = gs.GlitchStep;
+
+                pictureConverter.Glitch(inputFile, outPath, gstep);
+                Preview(outPath);
+
+            }
+            else
+                MessageBox.Show("Выберите файл или папку");
+        }
+
         #endregion
 
         private static void Preview(string outPath) // Preview logic
@@ -333,6 +376,8 @@ namespace WPFConverter
             PreviewResult pv = new PreviewResult(outPath);
             pv.ShowDialog();
         }
+
+        
     }
 
     
